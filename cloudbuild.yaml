@@ -1,9 +1,5 @@
 steps:
-  # - name: 'maven'
-  #   entrypoint: 'mvn'
-  #   args: ['clean', 'install', '-DskipTests']
-  # #https://cloud.google.com/build/docs/cloud-builders
-
+  # STEP 0  
   # Debug step to print environment variables
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
