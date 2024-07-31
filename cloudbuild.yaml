@@ -1,6 +1,7 @@
 steps:
   # STEP 0  
   # Debug step to print environment variables
+  # Check
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
