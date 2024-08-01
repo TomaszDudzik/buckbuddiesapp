@@ -1,4 +1,7 @@
 "use strict";
+// Import Firebase auth
+import { auth } from '../firebase_init.js';
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 // Class definition
 var KTSigninGeneral = function () {
@@ -45,7 +48,7 @@ var KTSigninGeneral = function () {
         );
     }
 
-    var handleSubmitDemo = function (e) {
+    var handleSubmitFirebase = function (e) {
         // Handle form submit
         submitButton.addEventListener('click', function (e) {
             // Prevent button default action
@@ -60,74 +63,18 @@ var KTSigninGeneral = function () {
                     // Disable button to avoid multiple click
                     submitButton.disabled = true;
 
+                    // Get email and password values
+                    var email = form.querySelector('[name="email"]').value;
+                    var password = form.querySelector('[name="password"]').value;
 
-                    // Simulate ajax request
-                    setTimeout(function () {
-                        // Hide loading indication
-                        submitButton.removeAttribute('data-kt-indicator');
-
-                        // Enable button
-                        submitButton.disabled = false;
-
-                        // Show message popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-                        Swal.fire({
-                            text: "You have successfully logged in!",
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        }).then(function (result) {
-                            if (result.isConfirmed) {
-                                form.querySelector('[name="email"]').value = "";
-                                form.querySelector('[name="password"]').value = "";
-
-                                //form.submit(); // submit form
-                                var redirectUrl = form.getAttribute('data-kt-redirect-url');
-                                if (redirectUrl) {
-                                    location.href = redirectUrl;
-                                }
-                            }
-                        });
-                    }, 2000);
-                } else {
-                    // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-                    Swal.fire({
-                        text: "Sorry, looks like there are some errors detected, please try again.",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    });
-                }
-            });
-        });
-    }
-
-    var handleSubmitAjax = function (e) {
-        // Handle form submit
-        submitButton.addEventListener('click', function (e) {
-            // Prevent button default action
-            e.preventDefault();
-
-            // Validate form
-            validator.validate().then(function (status) {
-                if (status == 'Valid') {
-                    // Show loading indication
-                    submitButton.setAttribute('data-kt-indicator', 'on');
-
-                    // Disable button to avoid multiple click
-                    submitButton.disabled = true;
-
-                    // Check axios library docs: https://axios-http.com/docs/intro
-                    axios.post(submitButton.closest('form').getAttribute('action'), new FormData(form)).then(function (response) {
-                        if (response) {
+                    // Firebase authentication
+                    signInWithEmailAndPassword(auth, email, password)
+                        .then((userCredential) => {
+                            // Signed in
+                            var user = userCredential.user;
                             form.reset();
 
-                            // Show message popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                            // Show success message
                             Swal.fire({
                                 text: "You have successfully logged in!",
                                 icon: "success",
@@ -139,14 +86,17 @@ var KTSigninGeneral = function () {
                             });
 
                             const redirectUrl = form.getAttribute('data-kt-redirect-url');
-
                             if (redirectUrl) {
                                 location.href = redirectUrl;
                             }
-                        } else {
-                            // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                        })
+                        .catch((error) => {
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+
+                            // Show error message
                             Swal.fire({
-                                text: "Sorry, the email or password is incorrect, please try again.",
+                                text: errorMessage,
                                 icon: "error",
                                 buttonsStyling: false,
                                 confirmButtonText: "Ok, got it!",
@@ -154,26 +104,16 @@ var KTSigninGeneral = function () {
                                     confirmButton: "btn btn-primary"
                                 }
                             });
-                        }
-                    }).catch(function (error) {
-                        Swal.fire({
-                            text: "Sorry, looks like there are some errors detected, please try again.",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        });
-                    }).then(() => {
-                        // Hide loading indication
-                        submitButton.removeAttribute('data-kt-indicator');
+                        })
+                        .finally(() => {
+                            // Hide loading indication
+                            submitButton.removeAttribute('data-kt-indicator');
 
-                        // Enable button
-                        submitButton.disabled = false;
-                    });
+                            // Enable button
+                            submitButton.disabled = false;
+                        });
                 } else {
-                    // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                    // Show error popup
                     Swal.fire({
                         text: "Sorry, looks like there are some errors detected, please try again.",
                         icon: "error",
@@ -206,11 +146,7 @@ var KTSigninGeneral = function () {
 
             handleValidation();
 
-            if (isValidUrl(submitButton.closest('form').getAttribute('action'))) {
-                handleSubmitAjax(); // use for ajax submit
-            } else {
-                handleSubmitDemo(); // used for demo purposes only
-            }
+            handleSubmitFirebase(); // use Firebase for authentication
         }
     };
 }();

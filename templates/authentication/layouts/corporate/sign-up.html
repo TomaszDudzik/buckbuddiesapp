@@ -14,11 +14,11 @@
 		<meta property="og:url" content="https://keenthemes.com/metronic" />
 		<meta property="og:site_name" content="Metronic by Keenthemes" />
 		<link rel="canonical" href="http://preview.keenthemes.comauthentication/sign-up.html" />
-		<link rel="shortcut icon" href="static/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
 
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="static/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="static/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -56,8 +56,9 @@
 									<!--begin::Col-->
 									<div class="col-md-6">
 										<!--begin::Google link=-->
-										<a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-										<img alt="Logo" src="static/media/svg/brand-logos/google-icon.svg" class="h-15px me-3" />Sign in with Google</a>
+										<a href="#" id="kt_sign_up_google" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
+											<img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="h-15px me-3" />Sign in with Google
+										</a>										
 										<!--end::Google link=-->
 									</div>
 									<!--end::Col-->
@@ -65,8 +66,8 @@
 									<div class="col-md-6">
 										<!--begin::Google link=-->
 										<a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-										<img alt="Logo" src="static/media/svg/brand-logos/apple-black.svg" class="theme-light-show h-15px me-3" />
-										<img alt="Logo" src="static/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show h-15px me-3" />Sign in with Apple</a>
+										<img alt="Logo" src="assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show h-15px me-3" />
+										<img alt="Logo" src="assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show h-15px me-3" />Sign in with Apple</a>
 										<!--end::Google link=-->
 									</div>
 									<!--end::Col-->
@@ -80,7 +81,7 @@
 								<!--begin::Input group=-->
 								<div class="fv-row mb-8">
 									<!--begin::Email-->
-									<input type="text" id= "email" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
+									<input type="text" id="email" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
 									<!--end::Email-->
 								</div>
 								<!--begin::Input group-->
@@ -114,7 +115,7 @@
 								<!--end::Input group=-->
 								<div class="fv-row mb-8">
 									<!--begin::Repeat Password-->
-									<input placeholder="Repeat Password" id="password"name="confirm-password" type="password" autocomplete="off" class="form-control bg-transparent" />
+									<input placeholder="Repeat Password" id="password" name="confirm-password" type="password" autocomplete="off" class="form-control bg-transparent" />
 									<!--end::Repeat Password-->
 								</div>
 								<!--end::Input group=-->
@@ -157,13 +158,14 @@
 		</div>
 		<!--end::Root-->
 		<!--begin::Javascript-->
-		<script>var hostUrl = "static/";</script>
+		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="static/plugins/global/plugins.bundle.js"></script>
-		<script src="static/js/scripts.bundle.js"></script>
+		<script src="assets/plugins/global/plugins.bundle.js"></script>
+		<script src="assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="static/js/custom/authentication/sign-up/general.js"></script>
+		<script type='module' src="assets/js/custom/authentication/sign-up/general.js"></script>
+		<script type='module' src="assets/js/custom/authentication/firebase_init.js"></script>
 		<!--end::Custom Javascript-->
 		<script type='module' src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js"></script>
 	    <script type='module' src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js"></script>
