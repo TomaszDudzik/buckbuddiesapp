@@ -1,9 +1,0 @@
-html_page_config:
-    viewport          : "width=device-width, initial-scale=1"
-    og_locale         : "en_US"
-    og_type           : "article"
-    og_title          : "Buck Buddies App"
-    og_url            : "https://buckbuddiesapp.com"
-    og_site_name      : "Buck Buddies App"
-    canonical         : "https://buckbuddiesapp.com"
-    shortcut_icon     : "static/media/logos/favicon.ico"
