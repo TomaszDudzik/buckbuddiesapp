@@ -3,7 +3,7 @@ import yaml
 from flask import Flask, render_template
 # from google.cloud import spanner
 
-app = Flask(__name__, static_folder='assets')
+app = Flask(__name__, static_folder='client/assets', template_folder='templates')
 
 # # Initialize the Spanner client
 # spanner_client = spanner.Client()
