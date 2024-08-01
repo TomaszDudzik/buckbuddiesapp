@@ -40,7 +40,7 @@ if (dev) {
 let demo = getDemo() ?? 'demo45';
 
 // under demo paths
-const demoPath = rootPath + (demo ? '/' + demo : '');
+const demoPath = rootPath + '/client';
 const distPath = demoPath;
 const assetDistPath = distPath + '/assets';
 const srcPath = demoPath + '/src';
@@ -93,7 +93,7 @@ function getEntryFiles() {
         'plugins/global/plugins.bundle': ['./webpack/plugins/plugins.js', './webpack/plugins/plugins.scss'],
         // Theme css/js
         'css/style.bundle': ['./' + path.relative('./', srcPath) + '/sass/style.scss', './' + path.relative('./', srcPath) + '/sass/plugins.scss'],
-        'js/scripts.bundle': './webpack/scripts' + (demo ? '.' + demo : '') + '.js',
+        'js/scripts.bundle': './webpack/scripts.js',
     };
 
     // Custom 3rd party plugins

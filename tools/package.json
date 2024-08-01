@@ -5,7 +5,7 @@
     "homepage": "https://keenthemes.com/",
     "description": "Packages used by yarn, npm, gulp and webpack",
     "main": "gulpfile.js",
-    "type": "module",
+
     "dependencies": {
         "@ckeditor/ckeditor5-alignment": "41.4.2",
         "@ckeditor/ckeditor5-build-balloon": "41.4.2",
