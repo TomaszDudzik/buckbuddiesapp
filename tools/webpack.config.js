@@ -88,12 +88,17 @@ function additionalSettings() {
 
 function getEntryFiles() {
 
+    const customFiles = glob.sync('../client/src/js/custom/**/*.js').map(file => path.resolve(__dirname, file));
+
     const entries = {
         // 3rd party plugins css/js
         'plugins/global/plugins.bundle': ['./webpack/plugins/plugins.js', './webpack/plugins/plugins.scss'],
         // Theme css/js
         'css/style.bundle': ['./' + path.relative('./', srcPath) + '/sass/style.scss', './' + path.relative('./', srcPath) + '/sass/plugins.scss'],
         'js/scripts.bundle': './webpack/scripts.js',
+        // Custom folder entry
+        'js/custom.bundle': customFiles // Adjust the path to your custom folder
+
     };
 
     // Custom 3rd party plugins

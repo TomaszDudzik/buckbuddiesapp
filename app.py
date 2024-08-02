@@ -28,7 +28,7 @@ app = Flask(__name__, static_folder='client/assets', template_folder='templates'
 
 @app.route('/')
 def cockpit():
-    with open('config.yaml') as config_file:
+    with open('config/config.yaml') as config_file:
         config = yaml.safe_load(config_file)
     return render_template('cockpit.html', config=config)
 
@@ -38,7 +38,7 @@ def bank():
 
 @app.route('/authentication/sign-up.html')
 def sign_up_page():
-    return render_template('/authentication/layouts/corporate/sign-up.html')
+    return render_template('/authentication/sign-up.html')
 
 @app.route('/authentication/sign-in.html')
 def sign_in_page():
