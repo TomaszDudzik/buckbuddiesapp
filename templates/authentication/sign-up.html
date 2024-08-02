@@ -40,7 +40,7 @@
 						<!--begin::Wrapper-->
 						<div class="w-lg-500px p-10">
 							<!--begin::Form-->
-							<form class="form w-100" novalidate="novalidate" id="kt_sign_up_form" data-kt-redirect-url="authentication/sign-in.html" action="#">
+							<form class="form w-100" novalidate="novalidate" id="kt_sign_up_form" data-kt-redirect-url="content_user.html" action="#">
 								<!--begin::Heading-->
 								<div class="text-center mb-11">
 									<!--begin::Title-->
@@ -56,7 +56,7 @@
 									<!--begin::Col-->
 									<div class="col-md-6">
 										<!--begin::Google link=-->
-										<a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
+										<a href="#" id="kt_sign_up_google" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
 										<img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="h-15px me-3" />Sign in with Google</a>
 										<!--end::Google link=-->
 									</div>
@@ -161,11 +161,9 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="assets/plugins/global/plugins.bundle.js"></script>
 		<script src="assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script type='module' src="assets/js/custom/authentication/firebase_init.js"></script>
-		<script type='module' src="assets/js/custom/authentication/sign-up/general.js"></script>
 		<!--end::Custom Javascript-->
+		<script type='module' src="assets/js/custom/td_firebase_init.js"></script>
+		<script type='module' src="assets/js/custom/authentication/sign-up/general.js"></script>
 		<script type='module' src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js"></script>
 	    <script type='module' src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js"></script>
 		<!--end::Javascript-->

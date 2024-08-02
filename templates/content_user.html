@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 
-{% block title %}Bank{% endblock %}
-
-{% block content %}
+{% block content %}   
+<!--begin::Wrapper container-->
     <container>
         <!-- Extra blank row -->
-        <div class="extra-blank-row"></div>     
+        <div class="extra-blank-row"></div>   
+        <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
             <!--begin::Wrapper container-->
             <div class="app-container container-xxl">
                 <!--begin::Main-->
@@ -21,21 +21,21 @@
                                 <div class="app-content-menu menu menu-rounded bg-gray-200 menu-state-bg flex-wrap fs-5 fw-bold mt-n15 pt-5 pb-0 mb-7 gap-1">
                                     <!--begin::Menu item-->
                                     <div class="menu-item m-0 p-0">
-                                        <a class="menu-link py-3 px-4" href="cockpit.html">
+                                        <a class="menu-link py-3 px-4 active" href="index.html">
                                             <span class="menu-title">Cockpit</span>
                                         </a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item m-0 p-0">
-                                        <a class="menu-link py-3 px-4 active" href="bank_statement.html">
+                                        <a class="menu-link py-3 px-4" href="bank.html">
                                             <span class="menu-title">Bank</span>
                                         </a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item m-0 p-0">
-                                        <a class="menu-link py-3 px-4" href="index.html">
+                                        <a class="menu-link py-3 px-4" href="cockpit.html">
                                             <span class="menu-title">Assets</span>
                                         </a>
                                     </div>
@@ -616,6 +616,6 @@
             </div>
             <!--end::Wrapper container-->
         </div>
-        <!--end::Extra blank row-->
+        <!--end::Wrapper-->
     </container>
 {% endblock %}
