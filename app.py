@@ -26,17 +26,9 @@ app = Flask(__name__, static_folder='client/assets', template_folder='templates'
 #             rows.append(row)
 #     return rows
 
-@app.route('/')
-def content_demo():
-    with open('config/config.yaml') as config_file:
-        config = yaml.safe_load(config_file)
-    return render_template('content_demo.html', config=config)
-
-@app.route('/content_user.html')
-def content_user():
-    with open('config/config.yaml') as config_file:
-        config = yaml.safe_load(config_file)
-    return render_template('content_user.html', config=config)
+@app.route('/content_cockpit.html')
+def index():
+    return render_template('content_cockpit.html')
 
 @app.route('/bank.html')
 def bank():
