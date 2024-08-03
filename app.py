@@ -3,7 +3,7 @@ import yaml
 from flask import Flask, render_template
 # from google.cloud import spanner
 
-app = Flask(__name__, static_folder='assets')
+app = Flask(__name__, static_folder='client/assets', template_folder='templates')
 
 # # Initialize the Spanner client
 # spanner_client = spanner.Client()
@@ -26,11 +26,9 @@ app = Flask(__name__, static_folder='assets')
 #             rows.append(row)
 #     return rows
 
-@app.route('/')
-def cockpit():
-    with open('config.yaml') as config_file:
-        config = yaml.safe_load(config_file)
-    return render_template('cockpit.html', config=config)
+@app.route('/content_cockpit.html')
+def index():
+    return render_template('content_cockpit.html')
 
 @app.route('/bank.html')
 def bank():
@@ -38,7 +36,7 @@ def bank():
 
 @app.route('/authentication/sign-up.html')
 def sign_up_page():
-    return render_template('/authentication/layouts/corporate/sign-up.html')
+    return render_template('/authentication/sign-up.html')
 
 @app.route('/authentication/sign-in.html')
 def sign_in_page():

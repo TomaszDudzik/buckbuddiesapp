@@ -431,7 +431,6 @@ business:
     - tag
     - tags
     - thumbtack
-    - thumbtack-slash
     - timeline
     - trademark
     - vault
@@ -1840,7 +1839,6 @@ maps:
     - tags
     - taxi
     - thumbtack
-    - thumbtack-slash
     - ticket
     - ticket-simple
     - traffic-light
@@ -2570,13 +2568,11 @@ shopping:
 social:
   icons:
     - bell
-    - bluesky
     - cake-candles
     - camera
     - circle-user
     - comment
     - envelope
-    - facebook
     - hashtag
     - heart
     - icons
@@ -2597,7 +2593,6 @@ social:
     - thumbs-down
     - thumbs-up
     - thumbtack
-    - thumbtack-slash
     - user
     - user-group
     - user-plus
@@ -2709,7 +2704,6 @@ text-formatting:
     - table-cells-column-lock
     - table-cells-large
     - table-cells-row-lock
-    - table-cells-row-unlock
     - table-columns
     - table-list
     - text-height
@@ -3078,5 +3072,4 @@ writing:
     - signature
     - square-pen
     - thumbtack
-    - thumbtack-slash
   label: Writing
