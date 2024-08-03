@@ -1,30 +1,56 @@
 import os
 import yaml
-from flask import Flask, render_template
-# from google.cloud import spanner
+from flask import Flask, render_template, request, jsonify
+from firebase_admin import auth as firebase_auth
+from server.spanner import database
+from server.firebase_init import cred 
 
 app = Flask(__name__, static_folder='client/assets', template_folder='templates')
 
-# # Initialize the Spanner client
-# spanner_client = spanner.Client()
+#Middleware to verify Firebase ID token
+def authenticate_token(f):
+    def wrap(*args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            print("Authorization header found")
+            try:
+                id_token = auth_header.split('Bearer ')[1]
+                print(f"ID Token extracted: {id_token}")
+                decoded_token = firebase_auth.verify_id_token(id_token)
+                print(f"Decoded token: {decoded_token}")
+                request.user = decoded_token
+                return f(*args, **kwargs)
+            except IndexError:
+                print("Bearer token not found in the Authorization header")
+                return jsonify({'error': 'Invalid Authorization Header'}), 401
+            except Exception as e:
+                print(f"Error verifying ID token: {e}")
+                return jsonify({'error': 'Unauthorized'}), 401
+        else:
+            print("Authorization header missing")
+            return jsonify({'error': 'Missing Authorization Header'}), 401
+    return wrap
 
-# # Your GCP project ID and Spanner instance/database IDs
-# project_id = 'buckbuddiesapp'
-# instance_id = 'buckbuddiesapp'
-# database_id = 'test_db'
+# Endpoint to store user information
+@app.route('/storeUserInfo', methods=['POST'])
+@authenticate_token
+def store_user_info():
+    user_info = request.json
+    user_id = request.user['uid']
 
-# # Get a reference to the Spanner instance and database
-# instance = spanner_client.instance(instance_id)
-# database = instance.database(database_id)
+    with database.batch() as batch:
+        try:
+            batch.insert_or_update(
+                table='Users',
+                columns=('userId', 'displayName', 'email', 'photoURL'),
+                values=[
+                    (user_id, user_info['displayName'], user_info['email'], user_info['photoURL'])
+                ]
+            )
+            return jsonify({'status': 'User information stored successfully.'}), 200
+        except Exception as e:
+            return jsonify({'error': 'Error storing user information.'}), 500
 
-# def get_spanner_data():
-#     query = 'SELECT transaction_id, account_id, amount, description FROM transactions LIMIT 3'
-#     rows = []
-#     with database.snapshot() as snapshot:
-#         results = snapshot.execute_sql(query)
-#         for row in results:
-#             rows.append(row)
-#     return rows
 
 @app.route('/content_cockpit.html')
 def index():

@@ -110,24 +110,26 @@ var KTSignupGeneral = function () {
                             const user = userCredential.user;
                             console.log('User created:', user);
 
-                            // Show success message
-                            Swal.fire({
-                                text: `You have successfully signed up! Welcome ${user.displayName || user.email}`,
-                                icon: "success",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function (result) {
-                                if (result.isConfirmed) {
-                                    form.reset();  // reset form
-                                    passwordMeter.reset();  // reset password meter
-                                    var redirectUrl = form.getAttribute('data-kt-redirect-url');
-                                    if (redirectUrl) {
-                                        location.href = redirectUrl;
+                            // Store user data and show success message
+                            storeUserData(user).then(() => {
+                                Swal.fire({
+                                    text: `You have successfully signed up! Welcome ${user.displayName || user.email}`,
+                                    icon: "success",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
                                     }
-                                }
+                                }).then(function (result) {
+                                    if (result.isConfirmed) {
+                                        form.reset();  // reset form
+                                        passwordMeter.reset();  // reset password meter
+                                        var redirectUrl = form.getAttribute('data-kt-redirect-url');
+                                        if (redirectUrl) {
+                                            location.href = redirectUrl;
+                                        }
+                                    }
+                                });
                             });
                         })
                         .catch((error) => {
@@ -183,22 +185,24 @@ var KTSignupGeneral = function () {
                     const user = result.user;
                     console.log('Google User:', user);
 
-                    // Show success message
-                    Swal.fire({
-                        text: `You have successfully signed in with Google! Welcome ${user.displayName || user.email}`,
-                        icon: "success",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }).then(function (result) {
-                        if (result.isConfirmed) {
-                            var redirectUrl = form.getAttribute('data-kt-redirect-url');
-                            if (redirectUrl) {
-                                location.href = redirectUrl;
+                    // Store user data and show success message
+                    storeUserData(user).then(() => {
+                        Swal.fire({
+                            text: `You have successfully signed in with Google! Welcome ${user.displayName || user.email}`,
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
                             }
-                        }
+                        }).then(function (result) {
+                            if (result.isConfirmed) {
+                                var redirectUrl = form.getAttribute('data-kt-redirect-url');
+                                if (redirectUrl) {
+                                    location.href = redirectUrl;
+                                }
+                            }
+                        });
                     });
                 })
                 .catch((error) => {
@@ -223,6 +227,30 @@ var KTSignupGeneral = function () {
                     });
                 });
         });
+    };
+
+    // Store user data function
+    const storeUserData = async (user) => {
+        try {
+            const idToken = await user.getIdToken();
+            const response = await fetch('http://127.0.0.1:8080/storeUserInfo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + idToken
+                },
+                body: JSON.stringify({
+                    displayName: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL
+                })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to store user data');
+            }
+        } catch (error) {
+            console.error('Error storing user data:', error);
+        }
     };
 
     // Password input validation
