@@ -1,56 +1,49 @@
 import os
 import yaml
+import json
 from flask import Flask, render_template, request, jsonify
-from firebase_admin import auth as firebase_auth
-from server.spanner import database
-from server.firebase_init import cred 
+import firebase_admin
+from firebase_admin import credentials, auth
+from google.cloud import spanner
 
 app = Flask(__name__, static_folder='client/assets', template_folder='templates')
 
-#Middleware to verify Firebase ID token
-def authenticate_token(f):
-    def wrap(*args, **kwargs):
-        auth_header = request.headers.get('Authorization')
-        if auth_header:
-            print("Authorization header found")
-            try:
-                id_token = auth_header.split('Bearer ')[1]
-                print(f"ID Token extracted: {id_token}")
-                decoded_token = firebase_auth.verify_id_token(id_token)
-                print(f"Decoded token: {decoded_token}")
-                request.user = decoded_token
-                return f(*args, **kwargs)
-            except IndexError:
-                print("Bearer token not found in the Authorization header")
-                return jsonify({'error': 'Invalid Authorization Header'}), 401
-            except Exception as e:
-                print(f"Error verifying ID token: {e}")
-                return jsonify({'error': 'Unauthorized'}), 401
-        else:
-            print("Authorization header missing")
-            return jsonify({'error': 'Missing Authorization Header'}), 401
-    return wrap
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'C:\Users\dudzi\Downloads\buckbuddiesapp-firebase-adminsdk-djci7-4e99168191.json'
 
-# Endpoint to store user information
+
+# Set the environment variable for Google Application Credentials
+cred = credentials.Certificate(r'C:\Users\dudzi\Downloads\buckbuddiesapp-firebase-adminsdk-djci7-4e99168191.json')
+firebase_admin.initialize_app(cred)
+
+# Initialize Spanner client
+spanner_client = spanner.Client()
+instance_id = 'newdatabase'
+database_id = 'newdb'
+instance = spanner_client.instance(instance_id)
+database = instance.database(database_id)
+
+
 @app.route('/storeUserInfo', methods=['POST'])
-@authenticate_token
 def store_user_info():
-    user_info = request.json
-    user_id = request.user['uid']
+    # Authentication logic
+    auth_header = request.headers.get('Authorization')
+    token = auth_header.split(" ")[1]
+    user_info = auth.verify_id_token(token)
+    email = user_info['email']
+    print(email)
+    print(user_info['uid'])
 
+    # Insert user info into Spanner
     with database.batch() as batch:
-        try:
-            batch.insert_or_update(
-                table='Users',
-                columns=('userId', 'displayName', 'email', 'photoURL'),
-                values=[
-                    (user_id, user_info['displayName'], user_info['email'], user_info['photoURL'])
-                ]
-            )
-            return jsonify({'status': 'User information stored successfully.'}), 200
-        except Exception as e:
-            return jsonify({'error': 'Error storing user information.'}), 500
+        batch.insert(
+            table='users',
+            columns=('user_id', 'email'),
+            values=[
+                (user_info['uid'], email)
+            ]
+        )
 
+    return jsonify({"status": "success"}), 200
 
 @app.route('/content_cockpit.html')
 def index():
