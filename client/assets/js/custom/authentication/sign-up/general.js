@@ -248,6 +248,11 @@ var KTSignupGeneral = function () {
             if (!response.ok) {
                 throw new Error('Failed to store user data');
             }
+
+            // Update the DOM with user information
+            document.getElementById('userName').textContent = user.displayName;
+            document.getElementById('userEmail').textContent = user.email;
+
         } catch (error) {
             console.error('Error storing user data:', error);
         }
